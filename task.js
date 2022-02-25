@@ -91,23 +91,43 @@ function stop_timer(){
     timerID = null;
 }
 
+todoList = document.querySelector('.todo-list');
+tasks = [];
 
-
-function addToDo(){
+function addTask(event){
     
     // let ch = document.getElementById("todo-input").value;
     // document.getElementById("test").innerHTML = ch;
+    
+    //event.preventDefault();
+    var radios = document.getElementsByName("taskPriority");
+    var selectedPriority = Array.from(radios).find(radio => radio.checked);
 
-    const todoDiv = document.createElement("div");
-    todoDiv.classList.add("todo")
+    let task = {
+        dateTime: Date.now(),
+        taskName: document.getElementById('todo-input').value,
+        priority: selectedPriority.value,
+        splits: document.getElementById('numOfPartsID').value,
+    }
+    tasks.push(task);
 
-    const newTodo = document.createElement('li');
-    newTodo.innerText = document.getElementById("todo-input").value;
-    newTodo.classList.add('todo-item')
-    todoDiv.appendChild(newTodo);
+    document.querySelector('form').reset();
 
-    todoList.appendChild(todoDiv);
-    document.getElementById("todo-input").value = "";
+    document.getElementById('test').innerHTML = JSON.stringify(tasks, null, 2);;
+
+    // console.log(tasks);
+
+
+    // const todoDiv = document.createElement("div");
+    // todoDiv.classList.add("todo")
+
+    // const newTodo = document.createElement('li');
+    // newTodo.innerText = document.getElementById("todo-input").value;
+    // newTodo.classList.add('todo-item')
+    // todoDiv.appendChild(newTodo);
+
+    // todoList.appendChild(todoDiv);
+    // document.getElementById("todo-input").value = "";
     
 
 }
@@ -132,7 +152,35 @@ function toggleBackground()
         card.style.color="white";
     }
     
-    
+}
+
+//The SVG Container
+
+// const DUMMY = [
+//     {id:'d1', region:'USA'},
+//     {id:'d2', region:'iNDIA'}
+// ]
+// d3.select("svg").selectAll('p').data(DUMMY).enter().append('p').text(dta=>dta.region).style('color', 'red'),font;
+// d3.select('svg').style("stroke-width", 8)
+
+// var s = d3.select('svg').text();
+// console.log(s)
+
+function increment(){
+    document.getElementById('numOfPartsID').stepUp();
+}
+
+function decrement(){
+    document.getElementById('numOfPartsID').stepDown();
 }
 
 
+
+//alternative code - learning
+
+//Radio
+
+// document.getElementById('submit').onclick = function() {
+//     var selected = document.querySelector('input[type=radio][name=contact]:checked');
+//     alert(selected.value);
+// }
