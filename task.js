@@ -1,4 +1,3 @@
-
 let timerID;
 
 function onPageLoad() {
@@ -94,7 +93,7 @@ function stop_timer(){
 todoList = document.querySelector('.todo-list');
 tasks = [];
 
-function addTask(event){
+function addTask(){
     
     // let ch = document.getElementById("todo-input").value;
     // document.getElementById("test").innerHTML = ch;
@@ -104,16 +103,20 @@ function addTask(event){
     var selectedPriority = Array.from(radios).find(radio => radio.checked);
 
     let task = {
-        dateTime: Date.now(),
+        id: Date.now(),
         taskName: document.getElementById('todo-input').value,
         priority: selectedPriority.value,
         splits: document.getElementById('numOfPartsID').value,
+        completed:0
     }
     tasks.push(task);
 
     document.querySelector('form').reset();
+    btnSubmit.disabled = true;
 
-    document.getElementById('test').innerHTML = JSON.stringify(tasks, null, 2);;
+    document.getElementById('test').innerHTML = JSON.stringify(tasks, null, 2);
+
+    addCircle(task);
 
     // console.log(tasks);
 
@@ -154,17 +157,6 @@ function toggleBackground()
     
 }
 
-//The SVG Container
-
-// const DUMMY = [
-//     {id:'d1', region:'USA'},
-//     {id:'d2', region:'iNDIA'}
-// ]
-// d3.select("svg").selectAll('p').data(DUMMY).enter().append('p').text(dta=>dta.region).style('color', 'red'),font;
-// d3.select('svg').style("stroke-width", 8)
-
-// var s = d3.select('svg').text();
-// console.log(s)
 
 function increment(){
     document.getElementById('numOfPartsID').stepUp();
@@ -173,6 +165,167 @@ function increment(){
 function decrement(){
     document.getElementById('numOfPartsID').stepDown();
 }
+
+var btnSubmit = document.getElementById("btnSubmit");
+function EnableDisable(taskName) {
+
+    //Verify the TextBox value.
+    if (taskName.value.trim() != "") {
+        //Enable the TextBox when TextBox has value.
+        btnSubmit.disabled = false;
+    } else {
+        //Disable the TextBox when TextBox is empty.
+        btnSubmit.disabled = true;
+    }
+};
+
+    
+let width=500;
+let height=500;
+
+var svg = d3.select(".d3Div")
+.append("svg")
+.attr("width", width)
+.attr("height", height)
+//.attr("viewBox", "0 0 100 100");
+
+var circleScale = d3.scaleLinear() .domain([1, 3]) .range([40, 20]);
+
+colorOnCompleteNum = ['white','#ede777', '#f5ec4c','#edbb55','orange','#3ad622']
+
+
+function addCircle(){
+
+    var g = svg.selectAll("g")
+                .data(tasks)
+                .enter()
+                .append("g")
+                .attr("transform", function(d, i) {
+                    return "translate(0,0)";
+                })
+                .on("click", circleCLick);
+
+                g.append("circle")
+                .attr("class", "circleClass")
+                .attr("cx", function(d, i) {
+                    
+                      return (i+1)*100 ;
+                })
+                .attr("cy", function(d, i) {
+                      return 100;
+                })
+                .attr("r", function(d) {
+                      return circleScale(d.priority);
+                })
+                .style("fill", function(d) {
+                    cur_split = d.splits;
+                    return color(d.completed);
+              })
+
+
+                g.append("text")
+                .attr("x", function(d, i) {
+                        return (i+1)*100;
+                })
+                .attr("y", 100)
+                .attr("stroke", "teal")
+                .attr("font-size", "12px")
+                .attr("font-family", "sans-serif")
+                .text(function(d) {
+                        return d.taskName;
+                });
+
+
+                g.append("text")
+                .attr("class", "progressInfo")
+                .attr("x", function(d, i) {
+                        return (i+1)*100 - 5;
+                })
+                .attr("y", function(d, i) {
+                    return 100 + circleScale(d.priority) + 15;
+            })
+                .attr("stroke", "teal")
+                .attr("font-size", "12px")
+                .attr("font-family", "sans-serif")
+                .text(function(d) {
+                        return d.completed + "/" + d.splits;
+                });
+}
+
+
+function circleCLick(clickRelated,d,i){
+    
+    d.completed = d.completed+1;
+    d3.select(this).select("circle")
+      .style("fill", function(d) {
+          color.domain([0, d.splits])
+        return color(d.completed);
+        })
+
+    d3.select(this).select(".progressInfo").text(function(d) {
+        return d.completed + "/" + d.splits;});
+    
+    if(d.completed == d.splits){
+        d3.select(this).transition().duration(500).remove();
+        console.log(d,i);
+        // tasks.pop(i);
+    }
+
+    
+}
+
+var color = d3.scaleLinear()
+  .range(["#ede777", "#3ad622"]);
+
+
+//D3-----------
+
+// d3.select("p").style("color","red");
+// d3.select("#p2").style("color", "blue");
+// d3.selectAll("p").style("color", "green");
+// d3.select(".pClass").style("color","yellow");
+// d3.select("#p2").text("Modified text through d3");
+// d3.select('.d3Tutorial').append("p").text("added this DOM element using d3 append ");
+// d3.select(".d3Tutorial").insert("p").text("Second paragraph.");
+// d3.select("p").remove();
+// d3.select("p").html("<span>This is new inner html.</span>");
+// d3.select("p").attr("class","error");
+// d3.select(".d3Tutorial").select("input").property("checked",true);
+
+// var data = ["280","272","285"];
+// // d3.select(".d3Tutorial").append('p').data(data).text(function(d,i){
+// //     console.log("d" + d + " i" + i + "this "+ this);
+// //     return d;
+// // });
+// d3.select(".d3Tutorial").append('p').data(data).text(data);
+// //d3.select("tr").selectAll("td").style('background-color','yellow');
+
+// d3.selectAll("p").style("color", function(d, i) {
+//     var text = this.innerText;
+
+//     if (text.indexOf("Error") >= 0) {
+//         return "red";
+//     } else if (text.indexOf("Warning") >= 0) {
+//         return "yellow";
+//     }
+// });
+
+// d3.select("#mouseOver").on("mouseover", function(){
+//     d3.select(".pClass").style("background-color", "black");  //d3.select(this)
+    
+// }).on("mouseout", function(){
+//     d3.select(".pClass").style("background-color", "green");
+// })
+
+// //Transition
+// d3.select(".containerTransition").transition().duration(1000).style("background-color", "green").delay(1000);
+
+
+
+
+
+
+
 
 
 
