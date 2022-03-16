@@ -116,22 +116,7 @@ function addTask(){
 
     document.getElementById('test').innerHTML = JSON.stringify(tasks, null, 2);
 
-    addCircle(task);
-
-    // console.log(tasks);
-
-
-    // const todoDiv = document.createElement("div");
-    // todoDiv.classList.add("todo")
-
-    // const newTodo = document.createElement('li');
-    // newTodo.innerText = document.getElementById("todo-input").value;
-    // newTodo.classList.add('todo-item')
-    // todoDiv.appendChild(newTodo);
-
-    // todoList.appendChild(todoDiv);
-    // document.getElementById("todo-input").value = "";
-    
+    addCircle(task);    
 
 }
 
@@ -277,63 +262,3 @@ function circleCLick(clickRelated,d,i){
 var color = d3.scaleLinear()
   .range(["#ede777", "#3ad622"]);
 
-
-//D3-----------
-
-// d3.select("p").style("color","red");
-// d3.select("#p2").style("color", "blue");
-// d3.selectAll("p").style("color", "green");
-// d3.select(".pClass").style("color","yellow");
-// d3.select("#p2").text("Modified text through d3");
-// d3.select('.d3Tutorial').append("p").text("added this DOM element using d3 append ");
-// d3.select(".d3Tutorial").insert("p").text("Second paragraph.");
-// d3.select("p").remove();
-// d3.select("p").html("<span>This is new inner html.</span>");
-// d3.select("p").attr("class","error");
-// d3.select(".d3Tutorial").select("input").property("checked",true);
-
-// var data = ["280","272","285"];
-// // d3.select(".d3Tutorial").append('p').data(data).text(function(d,i){
-// //     console.log("d" + d + " i" + i + "this "+ this);
-// //     return d;
-// // });
-// d3.select(".d3Tutorial").append('p').data(data).text(data);
-// //d3.select("tr").selectAll("td").style('background-color','yellow');
-
-// d3.selectAll("p").style("color", function(d, i) {
-//     var text = this.innerText;
-
-//     if (text.indexOf("Error") >= 0) {
-//         return "red";
-//     } else if (text.indexOf("Warning") >= 0) {
-//         return "yellow";
-//     }
-// });
-
-// d3.select("#mouseOver").on("mouseover", function(){
-//     d3.select(".pClass").style("background-color", "black");  //d3.select(this)
-    
-// }).on("mouseout", function(){
-//     d3.select(".pClass").style("background-color", "green");
-// })
-
-// //Transition
-// d3.select(".containerTransition").transition().duration(1000).style("background-color", "green").delay(1000);
-
-
-
-
-
-
-
-
-
-
-//alternative code - learning
-
-//Radio
-
-// document.getElementById('submit').onclick = function() {
-//     var selected = document.querySelector('input[type=radio][name=contact]:checked');
-//     alert(selected.value);
-// }
